@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends StaticBody2D
+
+onready var poly = Polygon2D.new()
+
+func _ready():
+	add_to_group(Game.GROUPS.ENVIRONMENT)
+	poly.polygon = $CollisionPolygon2D.polygon
+	poly.modulate = Color.darkgreen
+	add_child(poly)
+"
+
+[node name="Walls" type="StaticBody2D"]
+script = SubResource( 1 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 34.6296, 47.9586, 34.6296, 370.034, 504.049, 371.577, 501.349, 80.7447, 457.763, 79.9732, 457.377, 335.319, 63.1728, 337.248, 62.4013, 43.7156, 543.778, 48.73, 545.321, 400.891, 1.07204, 401.663, 0.686317, 46.03 )

@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://resources/skull_boss/skull.png" type="Texture" id=2]
+[ext_resource path="res://resources/skull_boss/cloak.png" type="Texture" id=3]
+[ext_resource path="res://resources/skull_boss/mask.png" type="Texture" id=4]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends KinematicBody2D
+
+onready var player = Main.get_player()
+
+var fliped = false
+var gpos
+var player_gpos
+
+
+func _ready():
+	pass
+
+func _process(delta):
+	if global_position.x > player.global_position.x:
+		$Sprite.flip_h = false
+		fliped = false
+	else:
+		$Sprite.flip_h = true
+		fliped = true
+	var rot = rad2deg(global_position.angle_to_point(player.global_position))
+	if fliped and rot + 180 <= 20:
+		rotation = deg2rad(rot) + deg2rad(180)
+		#when fliped, must go from 0 to 20
+	elif not fliped and rad2deg(global_position.angle_to_point(player.global_position)) >= -20:
+		rotation = global_position.angle_to_point(player.global_position)
+		#rotation must go from 0 to -20
+	
+"
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 21.789
+
+[node name="SkullBoss" type="Area2D"]
+
+[node name="Cloak" type="Sprite" parent="."]
+position = Vector2( 5.06216, 110.176 )
+texture = ExtResource( 3 )
+
+[node name="Skull" type="KinematicBody2D" parent="."]
+script = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="Skull"]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Skull"]
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+position = Vector2( 1.02203, 133.205 )
+polygon = PoolVector2Array( -59.9177, -117.465, -36.0703, -83.3975, -3.70602, -67.7264, 29.6803, -82.3755, 47.7361, -106.904, 51.4836, -123.257, 36.1531, -105.201, 15.3719, -85.7822, -18.6958, -85.7822, -35.0483, -98.7279 )
+
+[node name="Mask" type="Sprite" parent="."]
+position = Vector2( -2.97775, 36.0307 )
+texture = ExtResource( 4 )

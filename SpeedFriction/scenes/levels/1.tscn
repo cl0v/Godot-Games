@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/Walls.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Limits.tscn" type="PackedScene" id=3]
+
+[node name="1" type="Node"]
+
+[node name="Walls" parent="." instance=ExtResource( 2 )]
+position = Vector2( 81.7612, 28.9881 )
+
+[node name="CollisionPolygon2D" parent="Walls" index="0"]
+polygon = PoolVector2Array( 33.8581, 46.4157, 34.6296, 370.034, 504.049, 371.577, 501.349, 80.7447, 422.74, 78.276, 420.04, 307.007, 140.394, 301.607, 139.931, 44.4871, 543.778, 48.73, 545.321, 400.891, 1.07204, 401.663, 0.686317, 46.03 )
+
+[node name="Limits" parent="." instance=ExtResource( 3 )]
+
+[node name="PlayerSpawn" type="Position2D" parent="."]
+position = Vector2( 169.469, 29.7314 )
+
+[node name="CristalSpawn" type="Position2D" parent="."]
+position = Vector2( 538.881, 156.09 )
+
+[editable path="Walls"]

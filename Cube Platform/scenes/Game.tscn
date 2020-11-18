@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Pet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Floor.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scripts/ItemGenerator.gd" type="Script" id=5]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 131.687, 45.1557 )
+
+[sub_resource type="Curve2D" id=3]
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[node name="Game" type="Node"]
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 312.424, 202.274 )
+
+[node name="Pet" parent="." instance=ExtResource( 3 )]
+
+[node name="Floor" parent="." instance=ExtResource( 4 )]
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+modulate = Color( 0.101961, 0.0235294, 0.0235294, 1 )
+position = Vector2( 1250.68, 1000.49 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="StaticBody2D2"]
+scale = Vector2( 2.06527, 0.706665 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource( 2 )
+
+[node name="ItemGenerator" type="Position2D" parent="."]
+position = Vector2( 494.964, -91.4862 )
+script = ExtResource( 5 )
+
+[node name="Timer" type="Timer" parent="ItemGenerator"]
+wait_time = 9.183
+autostart = true
+
+[node name="path" type="Path2D" parent="."]
+curve = SubResource( 3 )
+[connection signal="timeout" from="ItemGenerator/Timer" to="ItemGenerator" method="_on_Timer_timeout"]

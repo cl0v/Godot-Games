@@ -1,0 +1,118 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scripts/Collectable.gd" type="Script" id=1]
+[ext_resource path="res://resources/power_books/fire.png" type="Texture" id=2]
+[ext_resource path="res://resources/particle/bubble_popping.png" type="Texture" id=3]
+[ext_resource path="res://resources/power_books/water.png" type="Texture" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 49.4443, 64.358 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "rotating"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.00508225, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("shadow:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.917858, 1 ), Vector2( 0.119929, 1 ), Vector2( 0.918, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Polygon2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.12, 1.01 ), Vector2( 0.119972, 0.968488 ), Vector2( 0.119957, 0.971177 ), Vector2( 0.119943, 0.973866 ), Vector2( 0.119929, 1 ), Vector2( 0.106728, 0.967843 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Polygon2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -27.5732, -2.23486 ), Vector2( -21.9891, -0.459229 ), Vector2( -16.126, -0.459229 ), Vector2( -8.45734, -0.459229 ), Vector2( 4.11115, -0.459229 ), Vector2( 6.84277, -0.459229 ), Vector2( 3.18506, -2.54808 ) ]
+}
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 2
+emission_box_extents = Vector3( 40, 70, 1 )
+flag_disable_z = true
+spread = 16.41
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color = Color( 0.537255, 0.643137, 0.952941, 1 )
+anim_speed = 6.02
+
+[sub_resource type="CanvasItemMaterial" id=4]
+next_pass = SubResource( 3 )
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 2
+particles_anim_loop = true
+
+[node name="TomeOfWater" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 4.52496, -0.215485 )
+rotation = 0.0897301
+shape = SubResource( 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2( -27.5732, -2.23486 )
+scale = Vector2( 0.12, 1.01 )
+color = Color( 0.0352941, 0, 0, 1 )
+polygon = PoolVector2Array( -51.8242, -69.9181, 34.137, -70.2045, 45.8372, 67.6528, -52.0629, 67.2233 )
+
+[node name="shadow" type="Sprite" parent="."]
+modulate = Color( 0.00784314, 0.00784314, 0.00784314, 1 )
+position = Vector2( 14.2365, -0.459229 )
+scale = Vector2( 0.918, 1 )
+texture = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -0.404022, 0 )
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "rotating"
+anims/rotating = SubResource( 2 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+material = SubResource( 4 )
+position = Vector2( -0.150726, -1.80669 )
+rotation = 0.0993936
+amount = 50
+process_material = SubResource( 3 )
+texture = ExtResource( 3 )
+[connection signal="body_entered" from="." to="." method="_on_RigidBody2D_body_entered"]

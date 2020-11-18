@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://cube.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+onready var cube_script = preload(\"res://cube.gd\")
+onready var cube_texture = preload(\"res://cube.png\")
+onready var map_script = preload(\"res://map.gd\")
+onready var screen_size = get_viewport().size
+
+func _ready():
+	add_child(create_cube_scene(cube_script))
+	add_child(create_map(map_script))
+
+
+func create_cube_scene(script):
+	var cube = KinematicBody2D.new()
+	cube.set_script(script)
+	return cube
+
+func create_map(map_script):
+	var body = StaticBody2D.new()
+	body.set_script(map_script)
+	var sprite = Sprite.new()
+	sprite.texture = texture
+	sprite.scale.x = screen_size.x / texture.get_size().x
+	body.position.y = screen_size.y * 2/3
+	body.position.x = screen_size.x / 2
+	var collision_shape = CollisionShape2D.new()
+	var rec_shape = RectangleShape2D.new()
+	collision_shape.shape = rec_shape
+	rec_shape.extents = sprite.scale * sprite.texture.get_size() / 2
+	body.add_child(sprite)
+	body.add_child(collision_shape)
+#	body.scale.x *=  screen_size.x / texture.get_size().x
+	return body
+	
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 1, 1 )
+
+[node name="Game" type="Node"]
+script = SubResource( 1 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+visible = false
+position = Vector2( 61.1427, 14.2438 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="KinematicBody2D"]
+scale = Vector2( 8, 8 )
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 30, 0 )

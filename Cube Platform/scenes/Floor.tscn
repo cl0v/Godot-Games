@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 538.391, 47.427 )
+
+[node name="Floor" type="StaticBody2D"]
+position = Vector2( 562.835, 1006.02 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 0.0313726, 0.0196078, 0.0196078, 1 )
+position = Vector2( 2.73106, 1.09239 )
+scale = Vector2( 8.38218, 0.726902 )
+texture = ExtResource( 1 )

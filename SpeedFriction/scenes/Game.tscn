@@ -1,0 +1,74 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/levels/1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://New Piskel-5.png" type="Texture" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+onready var player_spawn_pos = $\"1/PlayerSpawn\"
+onready var player_scene = preload(\"res://scenes/Player.tscn\")
+onready var cristal_scene = preload(\"res://scenes/Cristal.tscn\")
+onready var cristal_spawn_pos = $\"1/CristalSpawn\"
+
+var player
+var cristal
+
+func _ready():
+	cristal = cristal_scene.instance()
+	player = player_scene.instance()
+	cristal.position = cristal_spawn_pos.position
+	cristal.connect(\"collected\", self, \"_on_cristal_collected\")
+	player.connect(\"dead\", self, \"_on_player_dead\")
+	player.position = player_spawn_pos.position
+	add_child(player)
+	add_child(cristal)
+	
+	pass
+
+#Create a function that when the level is created, spawn the player inside it
+#when the player touches the wall, the palyer return to the spawn pos
+func _on_player_dead():
+	player.position = player_spawn_pos.position
+
+func _on_cristal_collected():
+	Game.points += 1
+	$Control/Label.text = str(Game.points)
+	next_level()
+
+func next_level():
+	pass
+	#Delete this level and create another one
+"
+
+[node name="Game" type="Node"]
+script = SubResource( 1 )
+
+[node name="Control" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="Control"]
+margin_left = 10.0
+margin_top = 5.0
+margin_right = 40.0
+margin_bottom = 41.0
+custom_fonts/font = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1" parent="." instance=ExtResource( 2 )]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground"]
+modulate = Color( 0.368627, 0.34902, 0.34902, 1 )
+margin_left = -11.0
+margin_top = -9.0
+margin_right = 690.0
+margin_bottom = 409.0
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

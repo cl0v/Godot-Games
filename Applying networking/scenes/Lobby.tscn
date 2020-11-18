@@ -1,0 +1,124 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+func _ready():
+	Network.connect(\"new_peer_connected\", self, \"_on_new_peer_connected\")
+	Network.connect(\"failed_to_connect_on_server\", self, \"_on_failed_to_connect_on_server\")
+
+func _on_BtnHost_pressed():
+	$PanelConnect/BtnHost.disabled = true
+	$PanelConnect/BtnJoin.disabled = true
+	Network.host_game()
+
+
+func _on_BtnJoin_pressed():
+	$PanelConnect/BtnHost.disabled = true
+	$PanelConnect/BtnJoin.disabled = true
+	$PanelConnect/BtnStart.disabled = true
+	Network.join_game($PanelConnect/TxtIP.text)
+
+func _on_BtnStart_pressed():
+	Network.rpc(\"start_game\")
+	$PanelConnect/BtnStart.disabled = true
+
+func _on_new_peer_connected():
+	print(\"Entrou um caboco novo\")
+
+func _on_failed_to_connect_on_server():
+	$PanelConnect/BtnHost.disabled = false
+	$PanelConnect/BtnJoin.disabled = false
+"
+
+[node name="Lobby" type="Control"]
+anchor_left = 0.000519037
+anchor_right = 1.00052
+anchor_bottom = 1.0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelConnect" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -108.0
+margin_top = -74.6024
+margin_right = 108.0
+margin_bottom = 72.3976
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelName" type="Label" parent="PanelConnect"]
+margin_left = 21.735
+margin_top = 17.6026
+margin_right = 61.735
+margin_bottom = 31.6026
+text = "Name"
+
+[node name="LabelIP" type="Label" parent="PanelConnect"]
+margin_left = 25.6515
+margin_top = 57.9391
+margin_right = 71.6515
+margin_bottom = 71.9391
+text = "IP"
+
+[node name="TxtName" type="TextEdit" parent="PanelConnect"]
+margin_left = 81.0
+margin_top = 8.0
+margin_right = 208.0
+margin_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Marcelo"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TxtIP" type="TextEdit" parent="PanelConnect"]
+margin_left = 88.0724
+margin_top = 48.3016
+margin_right = 193.072
+margin_bottom = 76.3016
+text = "127.0.0.1"
+
+[node name="BtnHost" type="Button" parent="PanelConnect"]
+margin_left = 38.0845
+margin_top = 81.9285
+margin_right = 104.084
+margin_bottom = 104.929
+text = "Host"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnJoin" type="Button" parent="PanelConnect"]
+margin_left = 120.265
+margin_top = 82.3261
+margin_right = 190.265
+margin_bottom = 106.326
+text = "Join"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnStart" type="Button" parent="PanelConnect"]
+anchor_left = 0.5
+anchor_top = 1.00139
+anchor_right = 0.5
+anchor_bottom = 1.00139
+margin_left = -71.2048
+margin_top = -32.3497
+margin_right = 68.7952
+margin_bottom = -12.3497
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="PanelConnect/BtnHost" to="." method="_on_BtnHost_pressed"]
+[connection signal="pressed" from="PanelConnect/BtnJoin" to="." method="_on_BtnJoin_pressed"]
+[connection signal="pressed" from="PanelConnect/BtnStart" to="." method="_on_BtnStart_pressed"]

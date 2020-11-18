@@ -1,0 +1,196 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://resources/Fonts/PixelFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://resources/Fonts/pixelart.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://scripts/Lobby.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 8
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 8
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 8
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 8
+font_data = ExtResource( 2 )
+
+[node name="Lobby" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.214317
+margin_top = 0.455688
+margin_right = 0.214325
+margin_bottom = 0.455688
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="Label" parent="."]
+margin_left = 2.40358
+margin_top = 0.240358
+margin_right = 134.404
+margin_bottom = 14.2404
+custom_fonts/font = ExtResource( 1 )
+text = "Multiplayer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Connect" type="Control" parent="."]
+margin_left = 9.13361
+margin_top = -1.20179
+margin_right = 49.1336
+margin_bottom = 38.7982
+
+[node name="Name" type="Label" parent="Connect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 65.0
+margin_top = 41.7113
+margin_right = 113.0
+margin_bottom = 55.7113
+custom_fonts/font = ExtResource( 1 )
+text = "Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IP" type="Label" parent="Connect"]
+margin_left = 85.0
+margin_top = 81.7113
+margin_right = 145.0
+margin_bottom = 112.711
+custom_fonts/font = ExtResource( 1 )
+text = "IP"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameText" type="TextEdit" parent="Connect"]
+margin_left = 143.0
+margin_top = 65.0
+margin_right = 231.0
+margin_bottom = 79.0
+rect_clip_content = true
+custom_fonts/font = SubResource( 1 )
+custom_constants/line_spacing = 3
+text = "Nestim"
+breakpoint_gutter = true
+fold_gutter = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IpText" type="TextEdit" parent="Connect"]
+margin_left = 143.0
+margin_top = 82.0
+margin_right = 231.0
+margin_bottom = 96.0
+rect_clip_content = true
+custom_fonts/font = SubResource( 1 )
+custom_constants/line_spacing = 3
+text = "192.168.1.130"
+breakpoint_gutter = true
+fold_gutter = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HostBtn" type="Button" parent="Connect"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 65.6835
+margin_top = 66.4835
+margin_right = 125.684
+margin_bottom = 86.4835
+custom_fonts/font = SubResource( 2 )
+text = "Host"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JoinBtn" type="Button" parent="Connect"]
+anchor_left = 0.5
+anchor_top = 0.998734
+anchor_right = 0.5
+anchor_bottom = 0.998734
+margin_left = 136.086
+margin_top = 66.3063
+margin_right = 196.086
+margin_bottom = 86.3063
+custom_fonts/font = SubResource( 2 )
+text = "Join"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Warning" type="Label" parent="Connect"]
+margin_left = 83.6074
+margin_top = 130.096
+margin_right = 123.607
+margin_bottom = 170.096
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.886275, 0.203922, 0.203922, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Players" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -57.0
+margin_top = -70.0
+margin_right = 57.0
+margin_bottom = 61.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerTxt" type="Label" parent="Players"]
+margin_left = 9.31935
+margin_top = 9.20253
+margin_right = 122.319
+margin_bottom = 30.2025
+custom_fonts/font = SubResource( 4 )
+text = "Awaiting Players"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="Players"]
+margin_top = 22.0
+margin_right = 114.0
+margin_bottom = 131.0
+
+[node name="StartBtn" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -28.0
+margin_right = 38.0
+margin_bottom = -3.0
+custom_fonts/font = ExtResource( 1 )
+text = "Start"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Connect/HostBtn" to="." method="_on_HostBtn_pressed"]
+[connection signal="pressed" from="Connect/JoinBtn" to="." method="_on_JoinBtn_pressed"]
+[connection signal="pressed" from="StartBtn" to="." method="_on_StartBtn_pressed"]

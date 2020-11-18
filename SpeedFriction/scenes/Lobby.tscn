@@ -1,0 +1,171 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://font.tres" type="DynamicFont" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+enum BtnStates {
+	HOST,
+	JOIN,
+	START,
+	CANCEL,
+}
+
+func _on_BtnHost_pressed():
+	# Still not sending the players name
+	btn_changes(BtnStates.HOST)
+	
+	Network.create_server()
+
+
+func _on_BtnJoin_pressed():
+	# Still not sending the players name
+	# Still not givind the option of the custom IP
+	btn_changes(BtnStates.JOIN)
+	Network.create_client()
+
+func _on_BtnCancel_pressed():
+	# Create function to cancel the request
+	Network.cancel_request()
+	btn_changes(BtnStates.CANCEL)
+	
+
+func _on_BtnStart_pressed():
+	btn_changes(BtnStates.START)
+
+func btn_changes(state):
+	match state:
+		BtnStates.HOST:
+			$Panel/BtnHost.hide()
+			$Panel/BtnJoin.hide()
+			$Panel/BtnStart.show()
+			$Panel/BtnStart.disabled = false
+			$Panel/BtnCancel.show()
+		BtnStates.JOIN:
+			$Panel/BtnHost.hide()
+			$Panel/BtnJoin.hide()
+			$Panel/BtnStart.show()
+			$Panel/BtnStart.disabled = true
+			$Panel/BtnCancel.show()
+		BtnStates.CANCEL:
+			$Panel/BtnHost.show()
+			$Panel/BtnJoin.show()
+			$Panel/BtnStart.hide()
+			$Panel/BtnCancel.hide()
+		BtnStates.START:
+			$Panel/BtnStart.disabled = true
+			$Panel/BtnCancel.disabled = true
+"
+
+[node name="Lobby" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 135.492
+margin_top = 71.001
+margin_right = 543.492
+margin_bottom = 346.001
+
+[node name="PlayerName" type="Label" parent="Panel"]
+margin_left = 54.0279
+margin_top = 26.0135
+margin_right = 462.028
+margin_bottom = 61.0135
+custom_fonts/font = ExtResource( 1 )
+text = "Player Name:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextName" type="TextEdit" parent="Panel"]
+margin_left = 67.0
+margin_top = 69.0
+margin_right = 325.0
+margin_bottom = 119.0
+custom_fonts/font = ExtResource( 1 )
+text = "Marcelo"
+
+[node name="IP" type="Label" parent="Panel"]
+margin_left = 54.0279
+margin_top = 130.568
+margin_right = 462.028
+margin_bottom = 165.568
+custom_fonts/font = ExtResource( 1 )
+text = "Ip Adress:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextIp" type="TextEdit" parent="Panel"]
+margin_left = 67.5003
+margin_top = 173.554
+margin_right = 325.5
+margin_bottom = 223.554
+custom_fonts/font = ExtResource( 1 )
+text = "192.168.0.1"
+
+[node name="BtnHost" type="Button" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -111.982
+margin_top = -47.4992
+margin_right = -15.9819
+margin_bottom = -6.49924
+custom_fonts/font = ExtResource( 1 )
+text = "Host"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnStart" type="Button" parent="Panel"]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -111.982
+margin_top = -47.4992
+margin_right = -15.9819
+margin_bottom = -6.49924
+custom_fonts/font = ExtResource( 1 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnJoin" type="Button" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 5.57898
+margin_top = -47.4992
+margin_right = 101.579
+margin_bottom = -6.49924
+custom_fonts/font = ExtResource( 1 )
+text = "Join"
+
+[node name="BtnCancel" type="Button" parent="Panel"]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 5.57898
+margin_top = -47.4992
+margin_right = 101.579
+margin_bottom = -6.49924
+custom_fonts/font = ExtResource( 1 )
+text = "Cancel"
+[connection signal="pressed" from="Panel/BtnHost" to="." method="_on_BtnHost_pressed"]
+[connection signal="pressed" from="Panel/BtnStart" to="." method="_on_BtnStart_pressed"]
+[connection signal="pressed" from="Panel/BtnJoin" to="." method="_on_BtnJoin_pressed"]
+[connection signal="pressed" from="Panel/BtnCancel" to="." method="_on_BtnCancel_pressed"]

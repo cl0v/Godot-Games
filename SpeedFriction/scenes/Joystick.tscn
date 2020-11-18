@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://VirtualJoystickPack/SmallHandleFilledGrey.png" type="Texture" id=1]
+[ext_resource path="res://VirtualJoystickPack/Joystick.png" type="Texture" id=2]
+[ext_resource path="res://VirtualJoystickPack/SmallHandle.png" type="Texture" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Sprite
+
+onready var btn_region_size = texture.get_size()
+onready var btn_inside_size = $TouchScreenButton.normal.get_size() / 2
+onready var radius = Vector2(50,50)
+onready var boundary = 150
+
+var ongoing_drag = -1
+var return_acceleration = 20
+var threshold = 10
+
+func get_btn_pos():
+	return $TouchScreenButton.position + radius
+
+func _input(event):
+	if event is InputEventScreenDrag or (event is InputEventScreenTouch and event.is_pressed()):
+		var event_dist_from_center = (event.position - global_position).length()
+		
+		if event_dist_from_center <= boundary * global_scale.x or event.index == ongoing_drag:
+				
+			$TouchScreenButton.global_position = event.position - radius * $TouchScreenButton.global_scale
+		
+			if get_btn_pos().length() > boundary:
+				$TouchScreenButton.position = (get_btn_pos().normalized() * boundary - radius)
+			ongoing_drag = event.index
+		
+	if event is InputEventScreenTouch and not event.is_pressed() and event.index == ongoing_drag:
+		ongoing_drag = -1
+
+func _process(delta):
+	if ongoing_drag == -1:
+		var pos_difference = (- radius) - $TouchScreenButton.position
+		$TouchScreenButton.position += pos_difference * return_acceleration * delta
+#	get_parent().set_dir_vector(get_value())
+
+func get_value():
+	if get_btn_pos().length() > threshold:
+		return get_btn_pos().normalized()
+	return Vector2.ZERO
+"
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 50.0
+
+[node name="Joystick" type="Sprite"]
+modulate = Color( 0, 0, 0, 1 )
+texture = ExtResource( 2 )
+script = SubResource( 1 )
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="."]
+modulate = Color( 0.854902, 0.054902, 0.054902, 1 )
+position = Vector2( -50, -50 )
+normal = ExtResource( 3 )
+pressed = ExtResource( 1 )
+shape = SubResource( 2 )
